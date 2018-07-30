@@ -80,7 +80,7 @@
     <section id="sendnow" class="projects-section bg-light">
       <div class="container">
           <h2 class="mb-4">Initiate Transfer Now</h2>
-          <form id="transferForm">
+          <form id="transferForm" action="#">
               <div class="form-group">
                   <!-- <label for="amount">Transfer amount (AUD)</label> -->
                   <input type="number" required="Please enter the transfer amount." class="form-control" id="amount" aria-describedby="amountHelp" placeholder="Enter transfer amount (minimum $1000)" min="1000">
@@ -115,7 +115,15 @@
                 <input type="checkbox" class="form-check-input" id="declaration" required>
                 <label class="form-check-label" for="declaration">I agree to the terms and conditions.</label>
               </div>
-              <button type="submit" class="btn btn-primary" id="buttonPay">Pay Now</button>
+              <!-- <div class="form-group">
+                <label class="image-radio">
+                  <input type="radio" name="image_radio" value="2">
+                  <img class="img-responsive" src="https://resources.apac.paywithpoli.com/poli-logo-37.png" width="79" height="50">
+                </label>
+              </div> -->
+              <input type="image" src="https://resources.apac.paywithpoli.com/poli-logo-37.png" width="100" height="64" title="Proceed to POLi Payment" alt="Proceed to POLi Payment" />
+              <br>
+              <a href="https://www.polipayments.com/buy">Learn more about POLi</a>
             </form>
       </div>
     </section>

@@ -39,7 +39,7 @@
   // Collapse the navbar when page is scrolled
   $(window).scroll(navbarCollapse);
 
-  $("#amountHelp").text("Today's exchange rate is Rs. 82.50 for every aussie dollar.");
+  $("#amountHelp").text("Today's exchange rate is Rs. 82.50 for one aussie dollar.");
 
 
   $("#transferForm").submit(function(event) {
