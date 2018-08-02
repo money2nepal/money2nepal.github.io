@@ -47,18 +47,18 @@
   //#endregion
 
   //#region CurrencyConversion
-  $.ajax({
-    url: currencyAPI
-  }).done(function (data) {
-    if (data !== undefined && data != null) {
-      var retrievedRate = data.AUD_NPR;
-      if (isNumber(retrievedRate)) {
-        retrievedRate = retrievedRate + ratePromotion;
-        rate = Math.round(retrievedRate * 100) / 100
-        updateAmountText();
-      }
-    }
-  });
+  // $.ajax({
+  //   url: currencyAPI
+  // }).done(function (data) {
+  //   if (data !== undefined && data != null) {
+  //     var retrievedRate = data.AUD_NPR;
+  //     if (isNumber(retrievedRate)) {
+  //       retrievedRate = retrievedRate + ratePromotion;
+  //       rate = Math.round(retrievedRate * 100) / 100
+  //       updateAmountText();
+  //     }
+  //   }
+  // });
 
   $("#amount").change(function () {
     updateAmountText();
