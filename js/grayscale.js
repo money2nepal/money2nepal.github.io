@@ -115,13 +115,15 @@
       return;
     }
     var email = $("#email").val();
+    var requestData = {
+      Amount: amount,
+      Reference: email,
+      Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
+    };
     $.ajax({
+      contentType: 'application/json',
       url: "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4",
-      data: {
-        Amount: amount,
-        Reference: email,
-        Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
-      },
+      data: JSON.stringify(requestData),
       type: "POST"
     }).done(function (data) {
       if (data.errorCode != 0) {
@@ -137,6 +139,8 @@
           RecipientMobile: $("#recipientMobile").val(),
           Instructions: $("#instructions").val(),
           Declaration: $('#declaration').is(":checked"),
+          //Rate:
+          //Total:
         };
         var customerDataJSON = JSON.stringify(customerData);
         var transactionId = data.transactionRefNo;
