@@ -109,7 +109,41 @@
 
   $("#transferForm").submit(function (event) {
     event.preventDefault();
-    alert("Sorry, we are experience some issues today. Please try again tomorrow.")
+
+    var amount = $("#amount").val();
+    if (!isNumber(amount)) {
+      return;
+    }
+    var email = $("#email").val();
+    $.ajax({
+      url: "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4",
+      data: {
+        Amount: amount,
+        Reference: email,
+        Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
+      },
+      type: "POST"
+    }).done(function (data) {
+      if (data.errorCode != 0) {
+        alert("Sorry, something went wrong.");
+      } else {
+        // save
+        var customerData = {
+          Amount: amount,
+          Email: email,
+          Name: $("#name").val(),
+          Mobile: $("#mobile").val(),
+          RecipientName: $("#recipientName").val(),
+          RecipientMobile: $("#recipientMobile").val(),
+          Instructions: $("#instructions").val(),
+          Declaration: $('#declaration').is(":checked"),
+        };
+        var customerDataJSON = JSON.stringify(customerData);
+        var transactionId = data.transactionRefNo;
+        localStorage.setItem(transactionId, customerDataJSON);
+        window.location.href = data.navigateURL;
+      }
+    });
   });
 
 })(jQuery); // End of use strict
