@@ -239,6 +239,24 @@
   border: 0;
 }
 
+.loader {
+  border: 8px solid #f8f9fa;
+  border-top: 8px solid #64a19d;
+  border-radius: 50%;
+  width: 47px;
+  height: 47px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 body {
   font-family: 'Nunito';
   letter-spacing: 0.0625em;

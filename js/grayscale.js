@@ -118,7 +118,7 @@
 
   $("#transferForm").submit(function (event) {
     event.preventDefault();
-
+    
     var amount = $("#amount").val();
     if (!isNumber(amount)) {
       return;
@@ -129,6 +129,7 @@
       Reference: email,
       Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
     };
+    showSpinner();
     $.ajax({
       contentType: 'application/json',
       url: "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4",
@@ -156,7 +157,20 @@
         localStorage.setItem(transactionId, customerDataJSON);
         window.location.href = data.navigateURL;
       }
+    }).fail(function() {
+      alert("Sorry, something went wrong processing your request.")
+      hideSpinner();
     });
   });
+
+  function showSpinner() {
+    $("#buttonPay").addClass("d-none");
+    $("#spinner").removeClass("d-none");
+  }
+
+  function hideSpinner() {
+    $("#spinner").addClass("d-none");
+    $("#buttonPay").removeClass("d-none");
+  }
 
 })(jQuery); // End of use strict
