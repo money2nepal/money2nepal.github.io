@@ -123,10 +123,10 @@
     if (!isNumber(amount)) {
       return;
     }
-    var email = $("#email").val();
+    var mobile = $("#mobile").val();
     var requestData = {
       Amount: amount,
-      Reference: email,
+      Reference: mobile,
       Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
     };
     showSpinner();
@@ -142,7 +142,7 @@
         // save
         var customerData = {
           Amount: amount,
-          Email: email,
+          Email: $("#email").val(),
           Name: $("#name").val(),
           Mobile: $("#mobile").val(),
           RecipientName: $("#recipientName").val(),
