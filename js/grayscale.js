@@ -15,6 +15,15 @@
   // $("#instructions").val("Account: 1024 0001 Bank: Recieving Bank Name");
   // $("#declaration").prop("checked", true);
 
+  var currentUrl = location.href;
+  if (currentUrl.indexOf("#success") != -1) {
+    $('#modalSuccess').modal('show');
+  } else if (currentUrl.indexOf("#failure") != -1) {
+    $('#modalFailure').modal('show');
+  } else if (currentUrl.indexOf("#cancelled") != -1) {
+    $('#modalCancelled').modal('show');
+  }
+
   //#region ThemeCode
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {
@@ -118,7 +127,7 @@
 
   $("#transferForm").submit(function (event) {
     event.preventDefault();
-    
+
     var amount = $("#amount").val();
     if (!isNumber(amount)) {
       return;
@@ -157,7 +166,7 @@
         localStorage.setItem(transactionId, customerDataJSON);
         window.location.href = data.navigateURL;
       }
-    }).fail(function() {
+    }).fail(function () {
       alert("Sorry, something went wrong processing your request.")
       hideSpinner();
     });
