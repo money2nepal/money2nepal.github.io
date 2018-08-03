@@ -6,6 +6,15 @@
   var ratePromotion = 1.5;
   var total = 0;
 
+  // $("#amount").val("1212");
+  // $("#name").val("Sender User");
+  // $("#email").val("sender.email@gmail.com");
+  // $("#mobile").val("0412 345 678");
+  // $("#recipientName").val("Recieving User");
+  // $("#recipientMobile").val("9812 345 678");
+  // $("#instructions").val("Account: 1024 0001 Bank: Recieving Bank Name");
+  // $("#declaration").prop("checked", true);
+
   //#region ThemeCode
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {
