@@ -3,7 +3,7 @@
 
   var currencyAPI = "http://free.currencyconverterapi.com/api/v5/convert?q=AUD_NPR&compact=ultra";
   var rate;
-  var ratePromotion = 1.5;
+  var ratePromotion = 2;
   var total = 0;
 
   // $("#amount").val("1212");
@@ -65,18 +65,18 @@
   //#endregion
 
   //#region CurrencyConversion
-  // $.ajax({
-  //   url: currencyAPI
-  // }).done(function (data) {
-  //   if (data !== undefined && data != null) {
-  //     var retrievedRate = data.AUD_NPR;
-  //     if (isNumber(retrievedRate)) {
-  //       retrievedRate = retrievedRate + ratePromotion;
-  //       rate = Math.round(retrievedRate * 100) / 100
-  //       updateAmountText();
-  //     }
-  //   }
-  // });
+  $.ajax({
+    url: currencyAPI
+  }).done(function (data) {
+    if (data !== undefined && data != null) {
+      var retrievedRate = data.AUD_NPR;
+      if (isNumber(retrievedRate)) {
+        retrievedRate = retrievedRate + ratePromotion;
+        rate = Math.round(retrievedRate * 100) / 100
+        updateAmountText();
+      }
+    }
+  });
 
   $("#amount").change(function () {
     updateAmountText();
