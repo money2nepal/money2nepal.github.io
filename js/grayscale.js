@@ -1,7 +1,7 @@
 (function ($) {
   "use strict"; // Start of use strict
 
-  var CurrencyAPI = "http://free.currencyconverterapi.com/api/v5/convert?q=AUD_NPR&compact=ultra";
+  var CurrencyAPI = "https://free.currencyconverterapi.com/api/v5/convert?q=AUD_NPR&compact=ultra";
   var POLiLinkAPI = "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4";
   var ServiceCharge = 5;
   var RatePromotion = 2;
