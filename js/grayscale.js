@@ -11,9 +11,9 @@
   // $("#amount").val("1212");
   // $("#name").val("Sender User");
   // $("#email").val("sender.email@gmail.com");
-  // $("#mobile").val("0412 345 678");
+  // $("#mobile").val("0412345678");
   // $("#recipientName").val("Recieving User");
-  // $("#recipientMobile").val("9812 345 678");
+  // $("#recipientMobile").val("9812345678");
   // $("#instructions").val("Account: 1024 0001 Bank: Recieving Bank Name");
   // $("#declaration").prop("checked", true);
 
@@ -143,9 +143,9 @@
     $("#reviewRate").text("Rs. " + nepaleseCurrencyCommas(transactionData.Rate));
     $("#reviewTotal").text("Rs. " + nepaleseCurrencyCommas(transactionData.Total));
     $("#reviewName").text(transactionData.Name);
-    $("#reviewMobile").text(transactionData.Mobile);
+    $("#reviewMobile").text(phoneNumberWithSpaces(transactionData.Mobile));
     $("#reviewRecipientName").text(transactionData.RecipientName);
-    $("#reviewRecipientMobile").text(transactionData.RecipientMobile);
+    $("#reviewRecipientMobile").text(phoneNumberWithSpaces(transactionData.RecipientMobile));
     $("#reviewInstructions").text(transactionData.Instructions);
     $('#modalConfirmPayment').modal('show');
   });
@@ -159,7 +159,7 @@
     var transactionData = getTransactionData();
     var requestData = {
       Amount: transactionData.Amount,
-      Reference: transactionData.Mobile,
+      Reference: phoneNumberWithSpaces(transactionData.Mobile),
       Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
     };
     $.ajax({
@@ -208,6 +208,18 @@
   function hideSpinner() {
     $("#spinner").addClass("d-none");
     $("#buttonPOLi").removeClass("d-none");
+  }
+
+  function phoneNumberWithSpaces(x) {
+    var phoneNumberWithSpaces = "";
+    for (var i = x.length - 1; i >= 0; i--) {
+      if (phoneNumberWithSpaces.length == 3 || phoneNumberWithSpaces.length == 7) {
+        phoneNumberWithSpaces = " " + phoneNumberWithSpaces;
+      }
+      // now add the digit
+      phoneNumberWithSpaces = x[i] + phoneNumberWithSpaces;
+    }
+    return phoneNumberWithSpaces;
   }
 
 })(jQuery); // End of use strict
