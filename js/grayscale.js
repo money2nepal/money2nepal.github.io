@@ -93,7 +93,7 @@
       var amount = $("#amount").val();
       if (isNumber(amount) && (amount - ServiceCharge) > 0) {
         convertedTotal = Math.round((amount - ServiceCharge) * currentConversionRate);
-        $("#amountHelp").text("After $" + ServiceCharge + " service charge, $" + numberWithCommas(amount - ServiceCharge) + " @ Rs." + currentConversionRate + " will be Rs. " + nepaleseCurrencyCommas(convertedTotal) + ".");
+        $("#amountHelp").text("After $" + ServiceCharge + " service charge, $" + numberWithCommas(amount - ServiceCharge) + " @ Rs." + currentConversionRate + " will be Rs." + nepaleseCurrencyCommas(convertedTotal) + ".");
       } else {
         $("#amountHelp").text("Today's exchange rate is Rs. " + currentConversionRate + " for one aussie dollar.");
       }
