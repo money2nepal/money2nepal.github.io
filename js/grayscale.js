@@ -6,7 +6,7 @@
   var ServiceCharge = 5;
   var RatePromotion = 2;
   var currentConversionRate;
-  var convertedTotal = 0;
+  var convertedTotal;
 
   // $("#amount").val("1212");
   // $("#name").val("Sender User");
@@ -80,6 +80,8 @@
         updateAmountText();
       }
     }
+  }).fail(function () {
+    alert("Sorry, we couldn't load today's exchange rate. As such we will not be able to process your request this time. Please try again later.")
   });
 
   $("#amount").change(function () {
@@ -99,10 +101,16 @@
   }
 
   function numberWithCommas(x) {
+    if (!isNumber(x)) {
+      return null;
+    }
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   function nepaleseCurrencyCommas(x) {
+    if (!isNumber(x)) {
+      return null;
+    }
     var numberWithCommas = "";
     var parts = x.toString().split(".");
     // To add commas, if we go backwards,
@@ -133,7 +141,9 @@
     event.preventDefault();
 
     var transactionData = getTransactionData();
-    if (!transactionData.Amount) {
+    if (!isNumber(transactionData.Amount) || !isNumber(transactionData.Rate)
+      || !isNumber(transactionData.Total) || !isNumber(transactionData.ServiceCharge)) {
+      alert("Sorry, unexpected error occurred.");
       return;
     }
 
@@ -169,7 +179,7 @@
       type: "POST"
     }).done(function (data) {
       if (data.errorCode != 0) {
-        alert("Sorry, something went wrong.");
+        alert("Sorry, we couldn't take you to POLi for the payments. Error code: " + data.errorCode);
         hideSpinner();
       } else {
         // save
@@ -211,6 +221,9 @@
   }
 
   function phoneNumberWithSpaces(x) {
+    if (!isNumber(x)) {
+      return null;
+    }
     var phoneNumberWithSpaces = "";
     for (var i = x.length - 1; i >= 0; i--) {
       if (phoneNumberWithSpaces.length == 3 || phoneNumberWithSpaces.length == 7) {
