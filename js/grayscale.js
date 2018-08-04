@@ -132,17 +132,36 @@
   $("#transferForm").submit(function (event) {
     event.preventDefault();
 
-    var amount = $("#amount").val();
-    if (!isNumber(amount)) {
+    var transactionData = getTransactionData();
+    if (!transactionData.Amount) {
       return;
     }
-    var mobile = $("#mobile").val();
+
+    // Update review information in the modal and open modal
+    $("#reviewAmount").text("$" + numberWithCommas(transactionData.Amount));
+    $("#reviewServiceCharge").text("$" + transactionData.ServiceCharge);
+    $("#reviewRate").text("Rs. " + nepaleseCurrencyCommas(transactionData.Rate));
+    $("#reviewTotal").text("Rs. " + nepaleseCurrencyCommas(transactionData.Total));
+    $("#reviewName").text(transactionData.Name);
+    $("#reviewMobile").text(transactionData.Mobile);
+    $("#reviewRecipientName").text(transactionData.RecipientName);
+    $("#reviewRecipientMobile").text(transactionData.RecipientMobile);
+    $("#reviewInstructions").text(transactionData.Instructions);
+    $('#modalConfirmPayment').modal('show');
+  });
+
+  $("#buttonCancelPay").click(function (event) {
+    hideSpinner();
+  });
+
+  $("#buttonPay").click(function (event) {
+    showSpinner();
+    var transactionData = getTransactionData();
     var requestData = {
-      Amount: amount,
-      Reference: mobile,
+      Amount: transactionData.Amount,
+      Reference: transactionData.Mobile,
       Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
     };
-    showSpinner();
     $.ajax({
       contentType: 'application/json',
       url: POLiLinkAPI,
@@ -151,39 +170,44 @@
     }).done(function (data) {
       if (data.errorCode != 0) {
         alert("Sorry, something went wrong.");
+        hideSpinner();
       } else {
         // save
-        var customerData = {
-          Amount: amount,
-          Email: $("#email").val(),
-          Name: $("#name").val(),
-          Mobile: $("#mobile").val(),
-          RecipientName: $("#recipientName").val(),
-          RecipientMobile: $("#recipientMobile").val(),
-          Instructions: $("#instructions").val(),
-          Declaration: $('#declaration').is(":checked"),
-          //Rate:
-          //Total:
-        };
-        var customerDataJSON = JSON.stringify(customerData);
+        var transactionDataJSON = JSON.stringify(transactionData);
         var transactionId = data.transactionRefNo;
-        localStorage.setItem(transactionId, customerDataJSON);
+        localStorage.setItem(transactionId, transactionDataJSON);
         window.location.href = data.navigateURL;
       }
     }).fail(function () {
       alert("Sorry, something went wrong processing your request.")
       hideSpinner();
     });
-  });
+  })
+
+  function getTransactionData() {
+    return {
+      Amount: $("#amount").val(),
+      Email: $("#email").val(),
+      Name: $("#name").val(),
+      Mobile: $("#mobile").val(),
+      RecipientName: $("#recipientName").val(),
+      RecipientMobile: $("#recipientMobile").val(),
+      Instructions: $("#instructions").val(),
+      Declaration: $('#declaration').is(":checked"),
+      Rate: currentConversionRate,
+      Total: convertedTotal,
+      ServiceCharge: ServiceCharge,
+    };
+  }
 
   function showSpinner() {
-    $("#buttonPay").addClass("d-none");
+    $("#buttonPOLi").addClass("d-none");
     $("#spinner").removeClass("d-none");
   }
 
   function hideSpinner() {
     $("#spinner").addClass("d-none");
-    $("#buttonPay").removeClass("d-none");
+    $("#buttonPOLi").removeClass("d-none");
   }
 
 })(jQuery); // End of use strict
