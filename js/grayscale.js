@@ -19,7 +19,7 @@
 
   var currentUrl = location.href;
   if (currentUrl.indexOf("#success") != -1) {
-    $('#modalSuccess').modal('show');
+    finaliseTransaction();
   } else if (currentUrl.indexOf("#failure") != -1) {
     $('#modalFailure').modal('show');
   } else if (currentUrl.indexOf("#cancelled") != -1) {
@@ -137,6 +137,7 @@
   }
   //#endregion
 
+  //#region Submission
   $("#transferForm").submit(function (event) {
     event.preventDefault();
 
@@ -211,13 +212,11 @@
   }
 
   function showSpinner() {
-    $("#buttonPOLi").addClass("d-none");
-    $("#spinner").removeClass("d-none");
+    $('#modalPleaseWait').modal('show');
   }
 
   function hideSpinner() {
-    $("#spinner").addClass("d-none");
-    $("#buttonPOLi").removeClass("d-none");
+    $('#modalPleaseWait').modal('hide');
   }
 
   function phoneNumberWithSpaces(x) {
@@ -233,6 +232,11 @@
       phoneNumberWithSpaces = x[i] + phoneNumberWithSpaces;
     }
     return phoneNumberWithSpaces;
-  }
+  };
+  //#endregion
+
+  function finaliseTransaction() {
+    $('#modalSuccess').modal('show');
+  };
 
 })(jQuery); // End of use strict
