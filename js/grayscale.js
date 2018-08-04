@@ -1,10 +1,12 @@
 (function ($) {
   "use strict"; // Start of use strict
 
-  var currencyAPI = "http://free.currencyconverterapi.com/api/v5/convert?q=AUD_NPR&compact=ultra";
-  var rate;
-  var ratePromotion = 2;
-  var total = 0;
+  var CurrencyAPI = "http://free.currencyconverterapi.com/api/v5/convert?q=AUD_NPR&compact=ultra";
+  var POLiLinkAPI = "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4";
+  var ServiceCharge = 5;
+  var RatePromotion = 2;
+  var currentConversionRate;
+  var convertedTotal = 0;
 
   // $("#amount").val("1212");
   // $("#name").val("Sender User");
@@ -66,13 +68,13 @@
 
   //#region CurrencyConversion
   $.ajax({
-    url: currencyAPI
+    url: CurrencyAPI
   }).done(function (data) {
     if (data !== undefined && data != null) {
       var retrievedRate = data.AUD_NPR;
       if (isNumber(retrievedRate)) {
-        retrievedRate = retrievedRate + ratePromotion;
-        rate = Math.round(retrievedRate * 100) / 100
+        retrievedRate = retrievedRate + RatePromotion;
+        currentConversionRate = Math.round(retrievedRate * 100) / 100
         updateAmountText();
       }
     }
@@ -83,13 +85,13 @@
   });
 
   function updateAmountText() {
-    if (isNumber(rate)) {
+    if (isNumber(currentConversionRate)) {
       var amount = $("#amount").val();
-      if (isNumber(amount)) {
-        total = Math.round(amount * rate);
-        $("#amountHelp").text("$" + numberWithCommas(amount) + " @ Rs." + rate + " will be Rs. " + nepaleseCurrencyCommas(total) + ".");
+      if (isNumber(amount) && (amount - ServiceCharge) > 0) {
+        convertedTotal = Math.round((amount - ServiceCharge) * currentConversionRate);
+        $("#amountHelp").text("After $" + ServiceCharge + " service charge, $" + numberWithCommas(amount - ServiceCharge) + " @ Rs." + currentConversionRate + " will be Rs. " + nepaleseCurrencyCommas(convertedTotal) + ".");
       } else {
-        $("#amountHelp").text("Today's exchange rate is Rs. " + rate + " for one aussie dollar.");
+        $("#amountHelp").text("Today's exchange rate is Rs. " + currentConversionRate + " for one aussie dollar.");
       }
     }
   }
@@ -141,7 +143,7 @@
     showSpinner();
     $.ajax({
       contentType: 'application/json',
-      url: "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4",
+      url: POLiLinkAPI,
       data: JSON.stringify(requestData),
       type: "POST"
     }).done(function (data) {
