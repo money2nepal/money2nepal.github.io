@@ -160,6 +160,7 @@
     $(".reviewRate").text("Rs. " + transactionData.Rate);
     $(".reviewTotal").text("Rs. " + nepaleseCurrencyCommas(transactionData.Total));
     $(".reviewName").text(transactionData.Name);
+    $(".reviewEmail").text(transactionData.Email);
     $(".reviewMobile").text(phoneNumberWithSpaces(transactionData.Mobile));
     $(".reviewRecipientName").text(transactionData.RecipientName);
     $(".reviewRecipientMobile").text(phoneNumberWithSpaces(transactionData.RecipientMobile));
@@ -280,6 +281,7 @@
         + "<strong>Rate:</strong> Rs." + transactionData.Rate + "<br>"
         + "<strong>Total:</strong> " + nepaleseCurrencyCommas(transactionData.Total) + "<br>"
         + "<strong>Sender:</strong> " + transactionData.Name + "<br>"
+        + "<strong>Sender Email:</strong> " + transactionData.Email + "<br>"
         + "<strong>Sender Mobile:</strong> " + phoneNumberWithSpaces(transactionData.Mobile) + "<br>"
         + "<strong>Recipient:</strong> " + transactionData.RecipientName + "<br>"
         + "<strong>Recipient Mobile:</strong> " + phoneNumberWithSpaces(transactionData.RecipientMobile) + "<br>"
