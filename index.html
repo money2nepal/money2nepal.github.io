@@ -177,39 +177,39 @@
           <ul>
             <li>
               <strong>Amount: </strong>
-              <span id="reviewAmount"></span>
+              <span class="reviewAmount"></span>
             </li>
             <li>
               <strong>Service Charge: </strong>
-              <span id="reviewServiceCharge"></span>
+              <span class="reviewServiceCharge"></span>
             </li>
             <li>
               <strong>Rate: </strong>
-              <span id="reviewRate"></span>
+              <span class="reviewRate"></span>
             </li>
             <li>
               <strong>Total: </strong>
-              <span id="reviewTotal"></span>
+              <span class="reviewTotal"></span>
             </li>
             <li>
               <strong>Sender: </strong>
-              <span id="reviewName"></span>
+              <span class="reviewName"></span>
             </li>
             <li>
               <strong>Sender mobile: </strong>
-              <span id="reviewMobile"></span>
+              <span class="reviewMobile"></span>
             </li>
             <li>
               <strong>Recipient: </strong>
-              <span id="reviewRecipientName"></span>
+              <span class="reviewRecipientName"></span>
             </li>
             <li>
               <strong>Recipient mobile: </strong>
-              <span id="reviewRecipientMobile"></span>
+              <span class="reviewRecipientMobile"></span>
             </li>
             <li>
               <strong>Instructions: </strong>
-              <span id="reviewInstructions"></span>
+              <span class="reviewInstructions"></span>
             </li>
           </ul>
           <p>We will now take you to POLi payment to finalise the transaction.</p>
@@ -235,17 +235,60 @@
     </div>
   </div>
 
-  <div class="modal" id="modalSuccess" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal" id="modalOrderComplete" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Payment Success</h5>
+          <h5 class="modal-title">Order Complete</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Thank you for your transaction with us. We will notify you of the updates.</p>
+          <p>Thank you for your transaction with us. We will contact you shortly with an update.</p>
+          <h6>Order details:</h6>
+          <ul>
+            <li>
+              <strong>Order Receipt Number: </strong>
+              <span class="reviewReceiptNumber"></span>
+            </li>
+            <li>
+              <strong>Amount: </strong>
+              <span class="reviewAmount"></span>
+            </li>
+            <li>
+              <strong>Service Charge: </strong>
+              <span class="reviewServiceCharge"></span>
+            </li>
+            <li>
+              <strong>Rate: </strong>
+              <span class="reviewRate"></span>
+            </li>
+            <li>
+              <strong>Total: </strong>
+              <span class="reviewTotal"></span>
+            </li>
+            <li>
+              <strong>Sender: </strong>
+              <span class="reviewName"></span>
+            </li>
+            <li>
+              <strong>Sender mobile: </strong>
+              <span class="reviewMobile"></span>
+            </li>
+            <li>
+              <strong>Recipient: </strong>
+              <span class="reviewRecipientName"></span>
+            </li>
+            <li>
+              <strong>Recipient mobile: </strong>
+              <span class="reviewRecipientMobile"></span>
+            </li>
+            <li>
+              <strong>Instructions: </strong>
+              <span class="reviewInstructions"></span>
+            </li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>

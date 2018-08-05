@@ -149,17 +149,22 @@
     }
 
     // Update review information in the modal and open modal
-    $("#reviewAmount").text("$" + numberWithCommas(transactionData.Amount));
-    $("#reviewServiceCharge").text("$" + transactionData.ServiceCharge);
-    $("#reviewRate").text("Rs. " + nepaleseCurrencyCommas(transactionData.Rate));
-    $("#reviewTotal").text("Rs. " + nepaleseCurrencyCommas(transactionData.Total));
-    $("#reviewName").text(transactionData.Name);
-    $("#reviewMobile").text(phoneNumberWithSpaces(transactionData.Mobile));
-    $("#reviewRecipientName").text(transactionData.RecipientName);
-    $("#reviewRecipientMobile").text(phoneNumberWithSpaces(transactionData.RecipientMobile));
-    $("#reviewInstructions").text(transactionData.Instructions);
+    loadConfirmPaymentAndOrderCompleteDetails(transactionData);
     $('#modalConfirmPayment').modal('show');
   });
+
+  function loadConfirmPaymentAndOrderCompleteDetails(transactionData){
+    $(".reviewAmount").text("$" + numberWithCommas(transactionData.Amount));
+    $(".reviewServiceCharge").text("$" + transactionData.ServiceCharge);
+    $(".reviewRate").text("Rs. " + nepaleseCurrencyCommas(transactionData.Rate));
+    $(".reviewTotal").text("Rs. " + nepaleseCurrencyCommas(transactionData.Total));
+    $(".reviewName").text(transactionData.Name);
+    $(".reviewMobile").text(phoneNumberWithSpaces(transactionData.Mobile));
+    $(".reviewRecipientName").text(transactionData.RecipientName);
+    $(".reviewRecipientMobile").text(phoneNumberWithSpaces(transactionData.RecipientMobile));
+    $(".reviewInstructions").text(transactionData.Instructions);
+    $(".reviewReceiptNumber").text(transactionData.TransactionRefNo);
+  }
 
   $("#buttonCancelPay").click(function (event) {
     hideSpinner();
@@ -184,9 +189,14 @@
         hideSpinner();
       } else {
         // save
+        transactionData.TransactionRefNo = data.transactionRefNo;
         var transactionDataJSON = JSON.stringify(transactionData);
-        var transactionId = data.transactionRefNo;
-        localStorage.setItem(transactionId, transactionDataJSON);
+        var parts = data.navigateURL.split("=");
+        if (parts.length !== 2){
+          alert("Unexpected error occurred. Please contact support.");
+        }
+        var token = parts[1];
+        sessionStorage.setItem(token, transactionDataJSON);
         window.location.href = data.navigateURL;
       }
     }).fail(function () {
@@ -236,7 +246,30 @@
   //#endregion
 
   function finaliseTransaction() {
-    $('#modalSuccess').modal('show');
+    showSpinner();
+    var token = getParameterByName("token");
+    var data = sessionStorage.getItem(token);
+    if(data != undefined && data != null && data.length > 0){
+      var transactionData = JSON.parse(data);
+      sendEmail(transactionData);
+      loadConfirmPaymentAndOrderCompleteDetails(transactionData);
+      hideSpinner();
+      $('#modalOrderComplete').modal('show');
+    }
   };
+
+  function sendEmail(transactionData){
+
+  }
+
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return results[2];
+}
 
 })(jQuery); // End of use strict
