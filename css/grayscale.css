@@ -20,6 +20,7 @@
 }
 
 #mainNav .navbar-brand {
+  transform: scale(2);
   color: #161616;
   font-weight: 700;
   padding: .9rem 0;
