@@ -3,6 +3,7 @@
 
   var CurrencyAPI = "https://free.currencyconverterapi.com/api/v5/convert?q=AUD_NPR&compact=ultra";
   var POLiLinkAPI = "https://money2nepal.azurewebsites.net/api/5ee2f588-8970-452c-9403-bf2b1af58cf4";
+  var EmailAPI = "https://money2nepal-email.azurewebsites.net/api/05969234-399b-4800-96f8-3f26ca716fb8";
   var ServiceCharge = 5;
   var RatePromotion = 2;
   var currentConversionRate;
@@ -153,10 +154,10 @@
     $('#modalConfirmPayment').modal('show');
   });
 
-  function loadConfirmPaymentAndOrderCompleteDetails(transactionData){
+  function loadConfirmPaymentAndOrderCompleteDetails(transactionData) {
     $(".reviewAmount").text("$" + numberWithCommas(transactionData.Amount));
     $(".reviewServiceCharge").text("$" + transactionData.ServiceCharge);
-    $(".reviewRate").text("Rs. " + nepaleseCurrencyCommas(transactionData.Rate));
+    $(".reviewRate").text("Rs. " + transactionData.Rate);
     $(".reviewTotal").text("Rs. " + nepaleseCurrencyCommas(transactionData.Total));
     $(".reviewName").text(transactionData.Name);
     $(".reviewMobile").text(phoneNumberWithSpaces(transactionData.Mobile));
@@ -192,7 +193,7 @@
         transactionData.TransactionRefNo = data.transactionRefNo;
         var transactionDataJSON = JSON.stringify(transactionData);
         var parts = data.navigateURL.split("=");
-        if (parts.length !== 2){
+        if (parts.length !== 2) {
           alert("Unexpected error occurred. Please contact support.");
         }
         var token = parts[1];
@@ -249,16 +250,64 @@
     showSpinner();
     var token = getParameterByName("token");
     var data = sessionStorage.getItem(token);
-    if(data != undefined && data != null && data.length > 0){
+    if (data != undefined && data != null && data.length > 0) {
       var transactionData = JSON.parse(data);
-      sendEmail(transactionData);
-      loadConfirmPaymentAndOrderCompleteDetails(transactionData);
-      hideSpinner();
-      $('#modalOrderComplete').modal('show');
+      sendEmail(transactionData, token);
     }
   };
 
-  function sendEmail(transactionData){
+  function sendEmail(transactionData, token) {
+    if (transactionData.EmailAlreadySent){
+      loadConfirmPaymentAndOrderCompleteDetails(transactionData);
+      hideSpinner();
+      $('#modalOrderComplete').modal('show');
+      return;
+    }
+
+    var requestData = {
+      CustomerEmail: transactionData.Email,
+      Subject: "Order Confirmation - " + transactionData.TransactionRefNo,
+      Body: "G'day " + transactionData.Name + "<br><br>"
+
+        + "Thank you for your transaction with money2nepal. We look forward to delivering your money soon. "
+        + "We will contact you on your mobile shortly to verify your transaction.<br><br>"
+
+        + "Your order details are below:<br><br>"
+
+        + "<strong>Order Receipt Number:</strong> " + transactionData.TransactionRefNo + "<br>"
+        + "<strong>Amount:</strong> $" + numberWithCommas(transactionData.Amount) + "<br>"
+        + "<strong>Service Charge:</strong> $" + transactionData.ServiceCharge + "<br>"
+        + "<strong>Rate:</strong> Rs." + transactionData.Rate + "<br>"
+        + "<strong>Total:</strong> " + nepaleseCurrencyCommas(transactionData.Total) + "<br>"
+        + "<strong>Sender:</strong> " + transactionData.Name + "<br>"
+        + "<strong>Sender Mobile:</strong> " + phoneNumberWithSpaces(transactionData.Mobile) + "<br>"
+        + "<strong>Recipient:</strong> " + transactionData.RecipientName + "<br>"
+        + "<strong>Recipient Mobile:</strong> " + phoneNumberWithSpaces(transactionData.RecipientMobile) + "<br>"
+        + "<strong>Instructions:</strong> " + transactionData.Instructions + "<br>"
+
+        + "<br>Best regards,"
+        + "<br>money2nepal"
+      ,
+      Key: "4B97C939-C37B-4CE1-9AD7-94DA349046FA"
+    };
+    $.ajax({
+      contentType: 'application/json',
+      url: EmailAPI,
+      data: JSON.stringify(requestData),
+      type: "POST"
+    }).done(function (data) {
+      if (data == true) {
+        transactionData.EmailAlreadySent = true;
+        sessionStorage.setItem(token, JSON.stringify(transactionData));
+        loadConfirmPaymentAndOrderCompleteDetails(transactionData);
+        hideSpinner();
+        $('#modalOrderComplete').modal('show');
+      } else {
+        alert("Something went wrong finalising your order. Please contact us and provide this receipt number: " + transactionData.TransactionRefNo);
+      }
+    }).fail(function () {
+      alert("Something went wrong finalising your order. Please contact us and provide this receipt number: " + transactionData.TransactionRefNo);
+    });
 
   }
 
@@ -266,10 +315,10 @@
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
+      results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
     return results[2];
-}
+  }
 
 })(jQuery); // End of use strict
