@@ -254,6 +254,9 @@
     if (data != undefined && data != null && data.length > 0) {
       var transactionData = JSON.parse(data);
       sendEmail(transactionData, token);
+    } else {
+      hideSpinner();
+      $('#modalSessionExpired').modal('show');
     }
   };
 
