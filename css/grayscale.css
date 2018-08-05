@@ -20,7 +20,7 @@
 }
 
 #mainNav .navbar-brand {
-  transform: scale(2);
+  transform: scale(1.5);
   color: #161616;
   font-weight: 700;
   padding: .9rem 0;
@@ -46,6 +46,7 @@
     transition: background-color 0.3s ease-in-out;
   }
   #mainNav .navbar-brand {
+    transform: scale(2);
     padding: .5rem 0;
     color: rgba(255, 255, 255, 0.5);
   }

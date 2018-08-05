@@ -11,7 +11,7 @@
     }
   }
   .navbar-brand {
-    transform: scale(2);
+    transform: scale(1.5);
     color: $black;
     font-weight: 700;
     padding: .9rem 0;
@@ -37,6 +37,7 @@
     background-color: transparent;
     transition: background-color 0.3s ease-in-out;
     .navbar-brand {
+      transform: scale(2);
       padding: .5rem 0;
       color: fade-out($white, .5);
     }
