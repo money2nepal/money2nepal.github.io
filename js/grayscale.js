@@ -142,6 +142,11 @@
   $("#transferForm").submit(function (event) {
     event.preventDefault();
 
+    if (!recaptchaLoaded) {
+      alert("Sorry, we weren't able to load all the components. Please try refreshing the page.");
+      return;
+    }
+
     var transactionData = getTransactionData();
     if (!isNumber(transactionData.Amount) || !isNumber(transactionData.Rate)
       || !isNumber(transactionData.Total) || !isNumber(transactionData.ServiceCharge)) {
@@ -178,7 +183,8 @@
     var requestData = {
       Amount: transactionData.Amount,
       Reference: phoneNumberWithSpaces(transactionData.Mobile),
-      Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226"
+      Key: "1ef33243-96c8-44f9-abf7-8dfac14c3226",
+      RecaptchaResponse: $("#g-recaptcha-response").val()
     };
     $.ajax({
       contentType: 'application/json',
@@ -187,8 +193,12 @@
       type: "POST"
     }).done(function (data) {
       if (data.errorCode != 0) {
-        alert("Sorry, we couldn't take you to POLi for the payments. Error code: " + data.errorCode);
         hideSpinner();
+        if (data.errorCode == -1010){
+          alert("Sorry, we couldn't verify that you are a human.");
+        } else {
+          alert("Sorry, we couldn't take you to POLi for the payments. Error code: " + data.errorCode);
+        }
       } else {
         // save
         transactionData.TransactionRefNo = data.transactionRefNo;
@@ -261,7 +271,7 @@
   };
 
   function sendEmail(transactionData, token) {
-    if (transactionData.EmailAlreadySent){
+    if (transactionData.EmailAlreadySent) {
       loadConfirmPaymentAndOrderCompleteDetails(transactionData);
       hideSpinner();
       $('#modalOrderComplete').modal('show');
@@ -327,3 +337,8 @@
   }
 
 })(jQuery); // End of use strict
+
+var recaptchaLoaded = false;
+var onRecaptchaLoad = function () {
+  recaptchaLoaded = true;
+};
