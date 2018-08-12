@@ -25,6 +25,16 @@
     $('#modalFailure').modal('show');
   } else if (currentUrl.indexOf("#cancelled") != -1) {
     $('#modalCancelled').modal('show');
+  } else if (currentUrl.indexOf("#sankalpa") != -1) {
+    $("#amount").attr("min", "250");
+    $("#amount").attr("placeholder", "Enter amount (from $250 to $10,000)");
+    $("#name").attr("disabled", true);
+    $("#name").val("Sankalpa Pokhrel");
+  } else if (currentUrl.indexOf("#bidur") != -1) {
+    $("#amount").attr("min", "350");
+    $("#amount").attr("placeholder", "Enter amount (from $350 to $10,000)");
+    $("#name").attr("disabled", true);
+    $("#name").val("Bidur Sharma Gautam");
   }
 
   $("#serviceCharge").text(ServiceCharge);
@@ -194,7 +204,7 @@
     }).done(function (data) {
       if (data.errorCode != 0) {
         hideSpinner();
-        if (data.errorCode == -1010){
+        if (data.errorCode == -1010) {
           alert("Sorry, we couldn't verify that you are a human.");
         } else {
           alert("Sorry, we couldn't take you to POLi for the payments. Error code: " + data.errorCode);
