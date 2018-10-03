@@ -88,6 +88,9 @@
       if (isNumber(retrievedRate)) {
         retrievedRate = retrievedRate + RatePromotion;
         currentConversionRate = Math.round(retrievedRate * 100) / 100
+        if (currentConversionRate > 85) {
+          currentConversionRate = 85;
+        }
         updateAmountText();
       }
     }
